@@ -8,3 +8,7 @@ SEN-17374	PIR sensor - An I2C interface Passive IR (PIR) sensor for detecting "o
 
 The relay is used to turn on a 12 volt fan. 
 
+To run unit tests execute the following from the root directory
+
+python3 -m unittest
+

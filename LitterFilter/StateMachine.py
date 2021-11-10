@@ -21,9 +21,6 @@ class Context(object):
         return self.config.OnTime
 
 class BaseState(object):
-    def __init__(self, context):
-        self.__context = context
-
     def ProcessEvent(self, eventId):
         return self
 
@@ -35,7 +32,7 @@ RunTimerExpired = 4
 
 class RunFan(BaseState):
     def __init__(self, context):
-        BaseState(context)
+        self.__context=context
         self.__context.StartTimer(RunTimerExpired, self.__context.GetRunTime())
         self.__context.EnableFan(True)
 
@@ -53,7 +50,7 @@ class RunFan(BaseState):
 
 class Delay(BaseState):
     def __init__(self, context):
-        BaseState(context)
+        self.__context=context
         self.__context.StartTimer(DelayTimerExpired, self.__context.GetDelayTime())
 
     def ProcessEvent(self, eventId):
@@ -67,7 +64,7 @@ class Delay(BaseState):
 
 class Occupied(BaseState):
     def __init__(self, context):
-        BaseState(context)
+        self.__context=context
 
     def ProcessEvent(self, eventId):
         if eventId == OnVacant:
@@ -78,7 +75,7 @@ class Occupied(BaseState):
 
 class Wait(BaseState):
     def __init__(self, context):
-        BaseState(context)
+        self.__context=context
 
     def ProcessEvent(self, eventId):
         if eventId == OnOccupied:

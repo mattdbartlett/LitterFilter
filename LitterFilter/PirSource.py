@@ -1,5 +1,5 @@
 
-from Event import EventSource
+from LitterFilter.Event import EventSource
 import qwiic_pir
 
 class PirSource(EventSource):

@@ -1,6 +1,6 @@
 
 import time
-import Event
+from LitterFilter import Event
 
 class Timer(object):
     """
@@ -12,7 +12,7 @@ class Timer(object):
         self.__durrationS = durrationS
 
     def IsExpired(self):
-        return ((self.__startTime+self.__durrationS) > time.monotonic())
+        return ((self.__startTime+self.__durrationS) <= time.monotonic())
 
     def GetEventID(self):
         return self.__eventId
@@ -30,10 +30,10 @@ class TimerService(Event.EventSource):
             del self.__timers[eventId]
 
     def Evaluate(self, stateMachine):
-        timers = self.__timers
-        for timer in timers:
+        #deep copy of internal timers, so we can modify the main list without corrupting our local copy
+        timers = dict(self.__timers)
+        for eventId,timer in timers.items():
             if timer.IsExpired():
-                eventId = timer.GetEventID()
                 del self.__timers[eventId]
                 stateMachine.ProcessEvent(eventId)
 

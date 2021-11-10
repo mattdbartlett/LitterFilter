@@ -3,9 +3,9 @@ import json
 import argparse
 import os.path
 
-import Event
-from Timer import TimerService
-from StateMachine import Context, StateMachine
+from LitterFilter import Event
+from LitterFilter.Timer import TimerService
+from LitterFilter.StateMachine import Context, StateMachine
 #from FanDevice import FanDevice
 #from PirSource import PirSource
 
