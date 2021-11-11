@@ -5,7 +5,7 @@ class FanDevice(object):
     """
     Control a fan device using an I2c relay
     """
-    def __init__(self, relayNumber=1):
+    def __init__(self, relayNumber=None):
         self.__relayNumber = relayNumber
         self.__device = qwiic_relay.QwiicRelay()
         if self.__device.begin() == False:

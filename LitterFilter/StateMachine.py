@@ -1,3 +1,4 @@
+import logging
 
 class Context(object):
     def __init__(self, timerService, fanDevice, config):
@@ -17,7 +18,7 @@ class Context(object):
     def GetDelayTime(self):
         return self.config.DelayTime
 
-    def GetOnTime(self):
+    def GetRunTime(self):
         return self.config.OnTime
 
 class BaseState(object):
@@ -32,6 +33,7 @@ RunTimerExpired = 4
 
 class RunFan(BaseState):
     def __init__(self, context):
+        logging.info("Entering state RunFan")
         self.__context=context
         self.__context.StartTimer(RunTimerExpired, self.__context.GetRunTime())
         self.__context.EnableFan(True)
@@ -50,6 +52,7 @@ class RunFan(BaseState):
 
 class Delay(BaseState):
     def __init__(self, context):
+        logging.info("Entering state Delay")
         self.__context=context
         self.__context.StartTimer(DelayTimerExpired, self.__context.GetDelayTime())
 
@@ -64,6 +67,7 @@ class Delay(BaseState):
 
 class Occupied(BaseState):
     def __init__(self, context):
+        logging.info("Entering state Occupied")
         self.__context=context
 
     def ProcessEvent(self, eventId):
@@ -75,6 +79,7 @@ class Occupied(BaseState):
 
 class Wait(BaseState):
     def __init__(self, context):
+        logging.info("Entering state Wait")
         self.__context=context
 
     def ProcessEvent(self, eventId):

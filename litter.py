@@ -2,12 +2,14 @@
 import json
 import argparse
 import os.path
+import logging
+import time
 
-from LitterFilter import Event
+from LitterFilter.Event import EventGenerator
 from LitterFilter.Timer import TimerService
-from LitterFilter.StateMachine import Context, StateMachine
-#from FanDevice import FanDevice
-#from PirSource import PirSource
+from LitterFilter.StateMachine import Context, StateMachine, OnOccupied, OnVacant, DelayTimerExpired, RunTimerExpired
+from LitterFilter.FanDevice import FanDevice
+from LitterFilter.PirSource import PirSource
 
 DEFAULT_FILE_PATH='/etc/litter.json'
 
@@ -28,7 +30,7 @@ class LitterConfig(object):
                 self.OnTime=doc["OnDuration_S"]
                 self.DelayTime=doc["WaitDelay_S"]
         else:
-            print "Configuration file \"{0}\" was not found or is not readable. Using default configuration parameters."
+            print("Configuration file \"{0}\" was not found or is not readable. Using default configuration parameters.")
 
 
     def __str__(self):
@@ -41,19 +43,22 @@ def main():
     args=parser.parse_args()
 
     config=LitterConfig(args.config)
-    print str(config)
+
+    #set up logging configuration
+    logging.basicConfig(filename='litter.log', filemode='w', level=logging.DEBUG)
+
+    logging.info(str(config))
 
     timerService = TimerService()
-    fanDevice = None #FanDevice.FanDevice()
+    fanDevice = FanDevice()
 
     #Create the state machine context
     context = Context(timerService, fanDevice, config)
 
-
     stateMachine = StateMachine(context)
-    generator = Event.EventGenerator(stateMachine)
+    generator = EventGenerator(stateMachine)
 
-    pirSource = None #PirSource(OnOccupied, OnVacant)
+    pirSource = PirSource(OnOccupied, OnVacant)
 
     #add event sources to the event generator
     generator.AddEventSource(timerService)
@@ -61,8 +66,7 @@ def main():
 
     #start running
     while generator.Run():
-        #TODO SLEEP
-        pass
+        time.sleep(1)
 
     
 

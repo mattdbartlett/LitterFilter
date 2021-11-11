@@ -1,6 +1,7 @@
 
 from LitterFilter.Event import EventSource
 import qwiic_pir
+import logging
 
 class PirSource(EventSource):
     """
@@ -17,10 +18,11 @@ class PirSource(EventSource):
     def Evaluate(self, stateMachine):
         curValue = self.__device.raw_reading() 
 
+        #logging.debug("PIR value is {0}".format(curValue))
         if self.__lastValue is None or self.__lastValue != curValue:
             self.__lastValue = curValue
             if curValue:
-                stateMachine.EvaluateEvent(self.__activeEvent)
+                stateMachine.ProcessEvent(self.__activeEvent)
             else:
-                stateMachine.EvaluateEvent(self.__inactiveEvent)
+                stateMachine.ProcessEvent(self.__inactiveEvent)
 
