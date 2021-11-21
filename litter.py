@@ -22,6 +22,7 @@ class LitterConfig(object):
         self.__filePath=filePath
         self.OnTime=120
         self.DelayTime=10
+        self.MinTriggerCount = 2
 
         #Parse the JSON file to get our configuration data
         if os.path.exists(self.__filePath):
@@ -29,12 +30,13 @@ class LitterConfig(object):
                 doc=json.load(fd)
                 self.OnTime=doc["OnDuration_S"]
                 self.DelayTime=doc["WaitDelay_S"]
+                self.MinTriggerCount=doc["MinTriggerCount"]
         else:
             print("Configuration file \"{0}\" was not found or is not readable. Using default configuration parameters.")
 
 
     def __str__(self):
-        return "Path=\"{0}\", duration={1}, delay={2}".format(self.__filePath, self.OnTime, self.DelayTime)
+        return "Path=\"{0}\", duration={1}, delay={2}, triggerCount={3}".format(self.__filePath, self.OnTime, self.DelayTime, self.MinTriggerCount)
 
 def main():
     parser = argparse.ArgumentParser("An automated litter box filter")

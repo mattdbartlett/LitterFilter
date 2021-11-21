@@ -2,5 +2,7 @@
     "__comment__OnDuration_S":"The number of seconds to run the fan after a \"deposit\"",
     "OnDuration_S": 240,
     "__comment__WaitDelay_S": "The number of seconds to wait before turning the fan on",
-    "WaitDelay_S": 20 
+    "WaitDelay_S": 20,
+    "__comment__MinTriggerCount": "The minimum number of times the pir sensor must trigger before fan activation",
+    "MinTriggerCount": 2
 }
