@@ -18,6 +18,10 @@ class LitterConfig(object):
     Provide configuration data for the litter filter, 
     loading configuration data from a json file if present
     '''
+    ON_DURATION_KEY="OnDuration_S"
+    WAIT_DELAY_KEY="WaitDelay_S"
+    TRIGGER_COUNT_KEY="MinTriggerCount"
+
     def __init__(self, filePath=DEFAULT_FILE_PATH):
         self.__filePath=filePath
         self.OnTime=120
@@ -28,9 +32,9 @@ class LitterConfig(object):
         if os.path.exists(self.__filePath):
             with open(self.__filePath, 'r') as fd:
                 doc=json.load(fd)
-                self.OnTime=doc["OnDuration_S"]
-                self.DelayTime=doc["WaitDelay_S"]
-                self.MinTriggerCount=doc["MinTriggerCount"]
+                self.OnTime=doc.get(ON_DURATION_KEY,self.OnTime)
+                self.DelayTime=doc.get(WAIT_DELAY_KEY,self.DelayTime)
+                self.MinTriggerCount=doc.get(TRIGGER_COUNT_KEY, self.MinTriggerCount)
         else:
             print("Configuration file \"{0}\" was not found or is not readable. Using default configuration parameters.")
 
