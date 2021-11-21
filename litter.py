@@ -32,9 +32,9 @@ class LitterConfig(object):
         if os.path.exists(self.__filePath):
             with open(self.__filePath, 'r') as fd:
                 doc=json.load(fd)
-                self.OnTime=doc.get(ON_DURATION_KEY,self.OnTime)
-                self.DelayTime=doc.get(WAIT_DELAY_KEY,self.DelayTime)
-                self.MinTriggerCount=doc.get(TRIGGER_COUNT_KEY, self.MinTriggerCount)
+                self.OnTime=doc.get(self.ON_DURATION_KEY,self.OnTime)
+                self.DelayTime=doc.get(self.WAIT_DELAY_KEY,self.DelayTime)
+                self.MinTriggerCount=doc.get(self.TRIGGER_COUNT_KEY, self.MinTriggerCount)
         else:
             print("Configuration file \"{0}\" was not found or is not readable. Using default configuration parameters.")
 
