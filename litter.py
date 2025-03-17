@@ -51,7 +51,10 @@ def main():
     config=LitterConfig(args.config)
 
     #set up logging configuration
-    logging.basicConfig(filename='litter.log', filemode='w', level=logging.DEBUG)
+    formatString="%(asctime)s # %(message)s"
+    fileHandler=logging.RotatingFileHandler('/var/log/litter.log', mode='a', maxBytes=50000, backupCount=4)
+    #logging.basicConfig(filename='litter.log', filemode='w', level=logging.DEBUG)
+    logging.basicConfig(handlers=(fileHandler,), filemode='w', level=logging.DEBUG)
 
     logging.info(str(config))
 
@@ -71,8 +74,12 @@ def main():
     generator.AddEventSource(pirSource)
 
     #start running
-    while generator.Run():
-        time.sleep(1)
+    try:
+        while generator.Run():
+            time.sleep(1)
+    except Exception ex:
+        logging.critical("Fatal exception encountered {0}".format(str(ex)))
+
 
     
 
